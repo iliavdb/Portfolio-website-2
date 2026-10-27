@@ -124,16 +124,30 @@ h2 { margin-bottom: 0; font-size: clamp(44px, 5vw, 66px); line-height: 1.04; }
 .contact-form input:focus, .contact-form textarea:focus { border-color: var(--green); }
 .contact-form input::placeholder, .contact-form textarea::placeholder { color: #7f8981; }
 .message-field { grid-column: span 2; }
-.contact-form .button { justify-self: start; margin-top: 5px; background: var(--green); color: var(--ink); }
+.contact-actions { display: grid; grid-column: 1 / -1; justify-items: start; gap: 12px; }
+.contact-form .button { justify-self: start; margin-top: 0; background: var(--green); color: var(--ink); }
 .contact-form .button:hover { background: #c9f58d; }
-.form-note { align-self: center; margin: 5px 0 0; color: #d8e6c6; font-size: 11px; }
+.form-note { grid-column: 1 / -1; align-self: center; margin: 0; color: #d8e6c6; font-size: 11px; }
 .email-link { display: inline-flex; align-items: center; gap: 10px; margin-top: 34px; color: #d9ded8; font: 12px var(--mono); }
 .email-link:hover { color: var(--green); }
+.contact-call { background: var(--green); color: var(--ink); }
+.contact-call:hover { background: #c9f58d; }
+.contact-call:focus-visible { outline: 2px solid white; outline-offset: 4px; }
 .contact-spark { position: absolute; top: 65px; right: 12%; color: #485c48; font-size: 230px; line-height: 1; animation: spin 35s linear infinite; }
 .site-footer { display: flex; min-height: 93px; align-items: center; justify-content: space-between; }
 .site-footer p { margin: 0; color: #787d77; font-size: 10px; }
 .back-top { display: flex; gap: 9px; color: #6c726c; font: 9px var(--mono); letter-spacing: .07em; }
 .back-top:hover { color: var(--ink); }
+
+.motion-ready [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity .7s ease var(--reveal-delay, 0ms), transform .7s cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms);
+}
+.motion-ready [data-reveal="left"] { transform: translate3d(-28px, 0, 0); }
+.motion-ready [data-reveal="right"] { transform: translate3d(28px, 0, 0); }
+.motion-ready [data-reveal].is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+.motion-ready .project-card[data-reveal].is-visible:hover { transform: translateY(-4px); }
 
 @media (max-width: 800px) {
   .section-wrap { width: min(100% - 48px, 620px); }

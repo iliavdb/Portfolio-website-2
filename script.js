@@ -69,3 +69,38 @@ contactForm.addEventListener("submit", (event) => {
 });
 
 document.querySelector("#year").textContent = new Date().getFullYear();
+
+const revealGroups = [
+  { selector: ".hero-copy > *", direction: "left" },
+  { selector: ".hero-art", direction: "right" },
+  { selector: ".about .section-heading", direction: "left" },
+  { selector: ".about-copy > *", direction: "right" },
+  { selector: ".section-topline > div", direction: "left" },
+  { selector: ".section-note", direction: "right" },
+  { selector: ".project-card", direction: "up" },
+  { selector: ".project-note", direction: "up" },
+  { selector: ".expertise .section-heading", direction: "left" },
+  { selector: ".expertise-content", direction: "right" },
+  { selector: ".contact-wrap > .eyebrow, .contact-wrap > h2, .contact-intro, .contact-form, .email-link", direction: "left" },
+];
+
+if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.body.classList.add("motion-ready");
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealGroups.forEach(({ selector, direction }) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      element.dataset.reveal = direction;
+      element.style.setProperty("--reveal-delay", `${index * 90}ms`);
+      revealObserver.observe(element);
+    });
+  });
+}
