@@ -3,6 +3,7 @@ const menuToggle = document.querySelector(".menu-toggle");
 const navigation = document.querySelector(".navigation");
 const contactForm = document.querySelector("#contact-form");
 const formNote = document.querySelector("#form-note");
+const dolphinCelebration = document.querySelector("#dolphin-celebration");
 
 let language = "nl";
 
@@ -66,9 +67,10 @@ contactForm.addEventListener("submit", async (event) => {
     }
 
     formNote.textContent = language === "nl"
-      ? "Bedankt! Je bericht is verstuurd."
+      ? "Bericht Is Verzonden"
       : "Thanks! Your message has been sent.";
     contactForm.reset();
+    dolphinCelebration.hidden = false;
   } catch (error) {
     console.error("Contact form submission failed:", error);
     formNote.textContent = language === "nl"
@@ -77,6 +79,10 @@ contactForm.addEventListener("submit", async (event) => {
   } finally {
     submitButton.disabled = false;
   }
+});
+
+dolphinCelebration.addEventListener("animationend", () => {
+  dolphinCelebration.hidden = true;
 });
 
 document.querySelector("#year").textContent = new Date().getFullYear();
