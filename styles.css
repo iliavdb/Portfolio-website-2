@@ -130,15 +130,14 @@ h2 { margin-bottom: 0; font-size: clamp(44px, 5vw, 66px); line-height: 1.04; }
 .contact-call { background: var(--accent); color: white; }
 .contact-call:hover { background: #b95e43; }
 .contact-call:focus-visible { outline: 2px solid white; outline-offset: 4px; }
-.dolphin-celebration:not([hidden]) { position: fixed; z-index: 30; top: 42%; left: 0; display: flex; align-items: center; gap: 12px; pointer-events: none; animation: dolphin-flight 3.2s cubic-bezier(.25, .6, .35, 1) both; }
+.dolphin-celebration:not([hidden]) { position: fixed; z-index: 30; top: 42%; left: 50%; display: flex; align-items: center; gap: 12px; pointer-events: none; animation: dolphin-flight 4.8s cubic-bezier(.25, .6, .35, 1) both; }
 .dolphin-emoji { font-size: clamp(56px, 9vw, 92px); line-height: 1; }
 .dolphin-message { padding: 12px 17px; border: 2px solid var(--accent); border-radius: 22px 22px 22px 4px; background: var(--paper); color: var(--ink); font-family: var(--display); font-size: clamp(16px, 2.6vw, 22px); white-space: nowrap; }
 @keyframes dolphin-flight {
-  0% { transform: translate(-110vw, 45px) rotate(-8deg); }
-  25% { transform: translate(-45vw, -35px) rotate(5deg); }
-  52% { transform: translate(10vw, 25px) rotate(-4deg); }
-  78% { transform: translate(65vw, -42px) rotate(6deg); }
-  100% { transform: translate(110vw, -10px) rotate(-5deg); }
+  0% { transform: translate(calc(-50% - 100vw), 45px) rotate(-8deg); }
+  15% { transform: translate(-50%, -12px) rotate(5deg); }
+  80% { transform: translate(-50%, 12px) rotate(-4deg); }
+  100% { transform: translate(calc(-50% + 100vw), -10px) rotate(5deg); }
 }
 .site-footer { display: flex; min-height: 93px; align-items: center; justify-content: space-between; }
 .site-footer p { margin: 0; color: #787d77; font-size: 10px; }
@@ -206,6 +205,6 @@ h2 { margin-bottom: 0; font-size: clamp(44px, 5vw, 66px); line-height: 1.04; }
   .site-footer p { order: 3; width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dolphin-celebration:not([hidden]) { animation-duration: .01ms; }
+  .dolphin-celebration:not([hidden]) { transform: translate(-50%, 0); animation: none; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

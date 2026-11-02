@@ -6,6 +6,7 @@ const formNote = document.querySelector("#form-note");
 const dolphinCelebration = document.querySelector("#dolphin-celebration");
 
 let language = "nl";
+let dolphinTimeout;
 
 function setLanguage(nextLanguage) {
   language = nextLanguage;
@@ -70,7 +71,11 @@ contactForm.addEventListener("submit", async (event) => {
       ? "Bericht Is Verzonden"
       : "Thanks! Your message has been sent.";
     contactForm.reset();
+    clearTimeout(dolphinTimeout);
     dolphinCelebration.hidden = false;
+    dolphinTimeout = setTimeout(() => {
+      dolphinCelebration.hidden = true;
+    }, 4800);
   } catch (error) {
     console.error("Contact form submission failed:", error);
     formNote.textContent = language === "nl"
@@ -79,10 +84,6 @@ contactForm.addEventListener("submit", async (event) => {
   } finally {
     submitButton.disabled = false;
   }
-});
-
-dolphinCelebration.addEventListener("animationend", () => {
-  dolphinCelebration.hidden = true;
 });
 
 document.querySelector("#year").textContent = new Date().getFullYear();
