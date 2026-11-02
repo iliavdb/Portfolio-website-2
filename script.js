@@ -23,12 +23,6 @@ function setLanguage(nextLanguage) {
   document.title = language === "nl"
     ? "Ilia Esmahilzade — Software Developer"
     : "Ilia Esmahilzade — Software Developer";
-
-  if (formNote.textContent) {
-    formNote.textContent = language === "nl"
-      ? "Je e-mailprogramma wordt geopend met je bericht."
-      : "Your email app will open with your message.";
-  }
 }
 
 languageToggle.addEventListener("click", () => {
@@ -51,56 +45,38 @@ navigation.addEventListener("click", (event) => {
   }
 });
 
-contactForm.addEventListener("submit", (event) => {
+contactForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!contactForm.reportValidity()) return;
 
-  const formData = new FormData(contactForm);
-  const name = formData.get("name").toString().trim();
-  const email = formData.get("email").toString().trim();
-  const message = formData.get("message").toString().trim();
-  const subject = encodeURIComponent(`Portfolio contact — ${name}`);
-  const body = encodeURIComponent(`${message}\n\n${language === "nl" ? "Bericht van" : "Message from"}: ${name}\n${email}`);
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  formNote.textContent = language === "nl" ? "Bezig met versturen..." : "Sending...";
 
-  formNote.textContent = language === "nl"
-    ? "Je e-mailprogramma wordt geopend met je bericht."
-    : "Your email app will open with your message.";
-  window.location.href = `mailto:Iliaesmahilzade3@gmail.com?subject=${subject}&body=${body}`;
+  try {
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: new FormData(contactForm),
+      headers: { Accept: "application/json" },
+    });
+    const result = await response.json();
+
+    if (!response.ok || (result.success !== "true" && result.success !== true)) {
+      throw new Error(result.message || "The form service rejected the submission.");
+    }
+
+    formNote.textContent = language === "nl"
+      ? "Bedankt! Je bericht is verstuurd."
+      : "Thanks! Your message has been sent.";
+    contactForm.reset();
+  } catch (error) {
+    console.error("Contact form submission failed:", error);
+    formNote.textContent = language === "nl"
+      ? "Versturen is niet gelukt. Probeer het opnieuw of mail me rechtstreeks."
+      : "Your message could not be sent. Please try again or email me directly.";
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 
 document.querySelector("#year").textContent = new Date().getFullYear();
-
-const revealGroups = [
-  { selector: ".hero-copy > *", direction: "left" },
-  { selector: ".hero-art", direction: "right" },
-  { selector: ".about .section-heading", direction: "left" },
-  { selector: ".about-copy > *", direction: "right" },
-  { selector: ".section-topline > div", direction: "left" },
-  { selector: ".section-note", direction: "right" },
-  { selector: ".project-card", direction: "up" },
-  { selector: ".project-note", direction: "up" },
-  { selector: ".expertise .section-heading", direction: "left" },
-  { selector: ".expertise-content", direction: "right" },
-  { selector: ".contact-wrap > .eyebrow, .contact-wrap > h2, .contact-intro, .contact-form, .email-link", direction: "left" },
-];
-
-if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  document.body.classList.add("motion-ready");
-
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  revealGroups.forEach(({ selector, direction }) => {
-    document.querySelectorAll(selector).forEach((element, index) => {
-      element.dataset.reveal = direction;
-      element.style.setProperty("--reveal-delay", `${index * 90}ms`);
-      revealObserver.observe(element);
-    });
-  });
-}
